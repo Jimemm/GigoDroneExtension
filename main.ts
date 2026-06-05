@@ -134,9 +134,12 @@ namespace drone {
         initModule()
         let txBuff = pins.createBuffer(8)
         txBuff[0] = 0xa5
-        txBuff[1] = 0x04
+        txBuff[1] = 0x02
         txBuff[2] = directionState
+        txBuff[3] = 0xff  // max distance (0x7FFF = 32767 cm)
+        txBuff[4] = 0x7f
         serial.writeBuffer(txBuff)
+        // no waitCallback — return immediately so movement continues in background
     }
     /**
      * Stop the drone's continuous movement
@@ -147,8 +150,10 @@ namespace drone {
         initModule()
         let txBuff = pins.createBuffer(8)
         txBuff[0] = 0xa5
-        txBuff[1] = 0x04
-        txBuff[2] = 0x00
+        txBuff[1] = 0x02
+        txBuff[2] = DirectionOptions.Forward  // direction doesn't matter at 0 distance
+        txBuff[3] = 0x00
+        txBuff[4] = 0x00
         serial.writeBuffer(txBuff)
     }
     /**
