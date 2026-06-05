@@ -37,34 +37,6 @@ namespace drone {
         //% block="roll right"
         Roll_right = 0x23
     }
-    function waitCallback(): boolean {
-        while(true){
-            let comRxErrorCnt = 0
-            let txBuff = pins.createBuffer(8)
-            txBuff[0] = 0xa5
-            txBuff[1] = 0x5a
-            serial.setRxBufferSize(8)
-            serial.writeBuffer(txBuff)
-            basic.pause(500)
-            let rowData = serial.readBuffer(0)
-            if(rowData.length < 8){
-                //basic.showNumber(rowData.length)
-                comRxErrorCnt += 1
-                if(comRxErrorCnt > 3){
-                    basic.showIcon(IconNames.No)
-                    return false
-                }
-            }else{
-                if (rowData[0] == 0x5a && rowData[1] == 0xff){
-                    // basic.showIcon(IconNames.Yes)
-                    // music.startMelody(music.builtInMelody(Melodies.BaDing), MelodyOptions.Once)
-                    return true
-                }
-            }
-        }
-        return false
-    }
-    
     function initModule(): void {
         if (isInit == 0){
             isInit = 1
@@ -92,7 +64,6 @@ namespace drone {
         txBuff[2] = height&0xff
         txBuff[3] = (height>>8)&0xff
         serial.writeBuffer(txBuff)
-        waitCallback()
     }
     /**
      * Drone takeoff action
@@ -114,7 +85,6 @@ namespace drone {
         txBuff[1] = 0x06
         txBuff[2] = 0x01
         serial.writeBuffer(txBuff)
-        waitCallback()
     }
     /**
      * Drone landing action
@@ -128,7 +98,6 @@ namespace drone {
         txBuff[1] = 0x06
         txBuff[2] = 0x02
         serial.writeBuffer(txBuff)
-        waitCallback()
     }
     /**
      * Start moving the drone continuously in the specified direction and speed until stopped
@@ -192,7 +161,7 @@ namespace drone {
         txBuff[0] = 0xa5
         txBuff[1] = 0x02
         txBuff[2] = DirectionOptions.Forward
-        txBuff[3] = 0x01
+        txBuff[3] = 0x00
         txBuff[4] = 0x00
         serial.writeBuffer(txBuff)
     }
@@ -214,7 +183,6 @@ namespace drone {
         txBuff[4] = (distance>>8)&0xff
 
         serial.writeBuffer(txBuff)
-        waitCallback()
     }
     /**
      * The drone rotates a specific angle in a certain direction
@@ -234,7 +202,6 @@ namespace drone {
         txBuff[4] = (angle>>8)&0xff
         
         serial.writeBuffer(txBuff)
-        waitCallback()
     }
     /**
      * Get the drone voltage value
