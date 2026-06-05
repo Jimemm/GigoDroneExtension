@@ -191,8 +191,8 @@ namespace drone {
         let txBuff = pins.createBuffer(8)
         txBuff[0] = 0xa5
         txBuff[1] = 0x02
-        txBuff[2] = DirectionOptions.Forward  // direction doesn't matter at 0 distance
-        txBuff[3] = 0x00
+        txBuff[2] = DirectionOptions.Forward
+        txBuff[3] = 0x01
         txBuff[4] = 0x00
         serial.writeBuffer(txBuff)
     }
