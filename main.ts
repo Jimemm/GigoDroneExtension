@@ -21,6 +21,12 @@ namespace drone {
         //% block="right"
         Right = 0x17
     }
+    export enum VerticalOptions {
+        //% block="up"
+        Up = 0x10,
+        //% block="down"
+        Down = 0x11
+    }
     export enum RollOptions {
         //% block="roll forward" 
         Roll_forward = 0x20,
@@ -155,6 +161,22 @@ namespace drone {
         txBuff[0] = 0xa5
         txBuff[1] = 0x02
         txBuff[2] = directionState
+        txBuff[3] = 0xff
+        txBuff[4] = 0x7f
+        serial.writeBuffer(txBuff)
+    }
+    /**
+     * Start moving the drone continuously up or down
+     * @param verticalState The vertical direction, up or down
+     */
+    //% block="start moving %verticalState"
+    //% weight=73 group="Basic"
+    export function startVerticalAction(verticalState: VerticalOptions): void {
+        initModule()
+        let txBuff = pins.createBuffer(8)
+        txBuff[0] = 0xa5
+        txBuff[1] = 0x02
+        txBuff[2] = verticalState
         txBuff[3] = 0xff
         txBuff[4] = 0x7f
         serial.writeBuffer(txBuff)
