@@ -125,12 +125,14 @@ namespace drone {
         waitCallback()
     }
     /**
-     * Start moving the drone continuously in the specified direction until stopped
+     * Start moving the drone continuously in the specified direction and speed until stopped
      * @param directionState The direction in which the drone moves
+     * @param speed Movement speed from 0 to 100
      */
-    //% block="start moving %directionState"
+    //% block="start moving %directionState at speed %speed"
+    //% speed.min=0 speed.max=100
     //% weight=75 group="Basic"
-    export function startMoveAction(directionState: DirectionOptions): void {
+    export function startMoveAction(directionState: DirectionOptions, speed: number): void {
         initModule()
         let txBuff = pins.createBuffer(8)
         txBuff[0] = 0xa5
@@ -138,8 +140,8 @@ namespace drone {
         txBuff[2] = directionState
         txBuff[3] = 0xff  // max distance (0x7FFF = 32767 cm)
         txBuff[4] = 0x7f
+        txBuff[5] = speed
         serial.writeBuffer(txBuff)
-        // no waitCallback — return immediately so movement continues in background
     }
     /**
      * Stop the drone's continuous movement
