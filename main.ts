@@ -95,7 +95,7 @@ namespace drone {
     //% weight=95 group="Basic"
     export function takeOffAction(): void {
         initModule()
-        for (let index = 3; index >= 0; index--) {
+        for (let index = 1; index >= 0; index--) {
             basic.showNumber(index)
             if (index == 0) {
                 music.playTone(523, music.beat(BeatFraction.Double))
