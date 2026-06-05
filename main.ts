@@ -144,6 +144,22 @@ namespace drone {
         serial.writeBuffer(txBuff)
     }
     /**
+     * Start moving the drone continuously in the specified direction
+     * @param directionState The direction in which the drone moves
+     */
+    //% block="start moving %directionState"
+    //% weight=74 group="Basic"
+    export function startMoveActionNoSpeed(directionState: DirectionOptions): void {
+        initModule()
+        let txBuff = pins.createBuffer(8)
+        txBuff[0] = 0xa5
+        txBuff[1] = 0x02
+        txBuff[2] = directionState
+        txBuff[3] = 0xff
+        txBuff[4] = 0x7f
+        serial.writeBuffer(txBuff)
+    }
+    /**
      * Stop the drone's continuous movement
      */
     //% block="stop moving"
